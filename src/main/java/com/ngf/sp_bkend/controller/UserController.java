@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,18 +33,37 @@ public class UserController {
     // get all users
     @GetMapping("/users")
     public List < User > getAllUsers() {
+ //   	System.out.println("Passei get all users");
         return userRepository.findAll();
     }
 
+    // get all users sort
+    @GetMapping("/users/sort_by_id")
+    public List < User > findAllUsers() {
+ //   	System.out.println("Passei find all users sort");
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
+    }
+
+    
     // get users by FirstName rest api
     @GetMapping("/users/name/{firstName}")
     public List < User > findByFirstNameContaining(@PathVariable String firstName) {
         return userRepository.findByFirstNameContaining(firstName);
     }
-
+    
+    // get users by FirstName Sort rest api
+    @GetMapping("/users/sort_by_name/{firstName}")
+    public List < User > findAllSortById(@PathVariable String firstName) {
+        return userRepository.findAllSortById(firstName);
+    }
+    
     // create user rest api
     @PostMapping("/users")
     public User createUser(@RequestBody User user) {
+        Calendar c = Calendar.getInstance();
+    	user.setDataUltAlt(c);  	
+//        System.out.println("Insert ==> data: " + c);
+//      System.out.println("Passei POST ID..." + user.getId());
         return userRepository.save(user);
     }
 
@@ -52,8 +72,11 @@ public class UserController {
     public ResponseEntity < User > getUserById(@PathVariable Long id) {
         User user = userRepository.findById(id)
             .orElseThrow( () -> new ResourceNotFoundException("User not exist with id :" + id));
+//        System.out.println("Passei get user by ID..." + id);
         return ResponseEntity.ok(user);
     }
+    
+ 
     // update user rest api
 
     @PutMapping("/users/{id}")
@@ -70,6 +93,7 @@ public class UserController {
         Calendar c = Calendar.getInstance();
         user.setDataUltAlt(c);
         User updatedUser = userRepository.save(user);
+        System.out.println("Update ==> data: " + user.getLogin() + "id= " + user.getId());
         return ResponseEntity.ok(updatedUser);
     }
 
@@ -82,6 +106,7 @@ public class UserController {
         userRepository.delete(user);
         Map < String, Boolean > response = new HashMap < > ();
         response.put("deleted", Boolean.TRUE);
+//        System.out.println("passei Delete.....");
         return ResponseEntity.ok(response);
     }
 }

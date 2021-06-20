@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "tb_users")
 public class User {
@@ -31,20 +33,22 @@ public class User {
 
 	@Column(name = "senha")
 	private String senha;
-	
+
 	@Column(name = "dataultalt")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private Calendar dataUltAlt;
-	
-	
-	
+
 	public User() {
 
 	}
-	public User(long id, String firstName, String lastName, String emailId, String login, String senha, Calendar dataUltAlt) {
+
+	public User(long id, String firstName, String lastName, String emailId, String login, String senha,
+			Calendar dataUltAlt) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.emailId = emailId;
+		this.login = login;
 		this.senha = senha;
 		this.dataUltAlt = dataUltAlt;
 	}
@@ -53,6 +57,7 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.emailId = emailId;
+		this.login = login;
 		this.senha = senha;
 		this.dataUltAlt = dataUltAlt;
 	}
@@ -102,7 +107,7 @@ public class User {
 	}
 
 	public void setSenha(String senha) {
-		this.login = senha;
+		this.senha = senha;
 	}
 
 	public Calendar getDataUltAlt() {
