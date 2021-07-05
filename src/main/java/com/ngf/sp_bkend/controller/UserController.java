@@ -33,7 +33,7 @@ public class UserController {
     // get all users
     @GetMapping("/users")
     public List < User > getAllUsers() {
- //   	System.out.println("Passei get all users");
+    	System.out.println("Passei get all users");
         return userRepository.findAll();
     }
 
@@ -54,6 +54,7 @@ public class UserController {
     // get users by FirstName Sort rest api
     @GetMapping("/users/sort_by_name/{firstName}")
     public List < User > findAllSortById(@PathVariable String firstName) {
+//    	System.out.println("passei sort first " + firstName);
         return userRepository.findAllSortById(firstName);
     }
     
@@ -93,7 +94,7 @@ public class UserController {
         Calendar c = Calendar.getInstance();
         user.setDataUltAlt(c);
         User updatedUser = userRepository.save(user);
-        System.out.println("Update ==> data: " + user.getLogin() + "id= " + user.getId());
+//        System.out.println("Update ==> data: " + user.getLogin() + "id= " + user.getId());
         return ResponseEntity.ok(updatedUser);
     }
 
